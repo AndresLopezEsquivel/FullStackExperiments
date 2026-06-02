@@ -1,0 +1,27 @@
+.card {
+  width: 500px;
+  padding: 10px;
+  margin: 0px auto;
+  display: flex;
+  justify-content: space-around;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #8CADA7;
+  border-bottom: 10px solid #F1A66A;
+}
+
+.avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  display: block;
+  margin: auto;
+}
+
+.description-box {
+  padding: 10px;
+  color: #1D4E89;
+}
+
+.black-dotted-border {
+  border: 1px dotted black;
+}
