@@ -3,4 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background-image: url("../../img/mexico-city.png");
+  background-size: cover;
+  background-position: 50% 30%;
 }
