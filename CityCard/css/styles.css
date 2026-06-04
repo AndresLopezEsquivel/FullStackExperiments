@@ -1,0 +1,35 @@
+@import url("./components/banner.css");
+@import url("./components/button.css");
+@import url("./components/card.css");
+@import url("./components/container.css");
+@import url("./components/fonts.css");
+@import url("./components/footer.css");
+@import url("./components/utils.css");
+
+* {
+  border: 1px solid black;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+main {
+  height: 100px;
+}
+
+header {
+  display: flex;
+  padding: 20px 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-btns {
+  display: flex;
+  gap: 10px;
+}
