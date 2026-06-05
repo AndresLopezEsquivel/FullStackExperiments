@@ -1,0 +1,42 @@
+* {
+  border: 1px solid black;
+}
+
+body, h1, h2 {
+  margin: 0;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+}
+
+.blog {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-img {
+  min-height: 100dvh;
+  flex: 2;
+  background-image: url("../img/robot.png");
+  background-size: cover;
+}
+
+.blog-header {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.blog-content {
+  flex: 1;
+  column-count: 3;
+  padding: 10px;
+}
+
+.preserve-breaks {
+    white-space: pre-line;
+}
