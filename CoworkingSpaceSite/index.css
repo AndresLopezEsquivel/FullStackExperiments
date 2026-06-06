@@ -5,12 +5,28 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+header {
+  background-color: #282828;
+  color: whitesmoke;
 }
 
 nav > ul {
   margin: 0;
-  padding: 0;
+  padding: 10px 0 10px 10px;
   list-style: none;
   display: flex;
   align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.logo + li > img {
+  width: 25px;
 }
