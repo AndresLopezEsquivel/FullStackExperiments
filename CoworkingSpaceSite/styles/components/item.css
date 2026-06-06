@@ -1,7 +1,21 @@
+.item {
+  position: relative;
+}
+
 .item > img {
   width: 100%;
 }
 
 .item > div > p {
   margin: 50px;
+}
+
+.img-banner {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 20px;
+  color: whitesmoke;
+  background-color: #CD6858;
 }
