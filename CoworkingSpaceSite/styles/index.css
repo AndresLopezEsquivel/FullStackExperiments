@@ -1,5 +1,10 @@
-* {
-  border: 1px solid black;
+@import url("./components/item.css");
+
+h1 {
+  margin: 0;
+  font-size: 40px;
+  font-weight: 400;
+  padding: 50px;
 }
 
 body {

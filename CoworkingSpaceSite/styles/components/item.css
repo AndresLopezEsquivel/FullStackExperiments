@@ -1,0 +1,7 @@
+.item > img {
+  width: 100%;
+}
+
+.item > div > p {
+  margin: 50px;
+}
