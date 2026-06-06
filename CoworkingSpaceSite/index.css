@@ -1,10 +1,16 @@
+* {
+  border: 1px solid black;
+}
+
 body {
     margin: 0;
     padding: 0;
 }
 
-/*
-Challenge:
-1. Get this layout looking like the 
-   screenshots on the slide.
-*/  
+nav > ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
