@@ -3,11 +3,12 @@
 }
 
 .item > img {
+  display: block;
   width: 100%;
 }
 
 .item > div > p {
-  margin: 50px;
+  margin: 20px;
 }
 
 .img-banner {
@@ -18,4 +19,19 @@
   padding: 10px 20px;
   color: whitesmoke;
   background-color: #CD6858;
+}
+
+.caption {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.caption > button {
+  color: whitesmoke;
+  background-color: #CD6858;
+  border: none;
+  padding: 10px;
+  margin-right: 20px;
+  margin-left: auto;
 }
