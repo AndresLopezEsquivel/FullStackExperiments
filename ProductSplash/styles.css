@@ -80,5 +80,23 @@ p {
   .intro,
   .main-content {
     flex: 1;
+    min-height: 100vh;
+  }
+
+  .main-content {
+    justify-content: center;
+  }
+
+  h1 {
+    /* font-size: 3.25rem; /* 16px * 3.25 = 52px */
+    font-size: 5vw;
+  }
+
+  h2 {
+    font-size: 2.625rem; /* 16px * 2.625 = 42px */
+  }
+
+  .beta-text {
+    font-size: 1.25rem; /* 16px * 1.25 = 20px */
   }
 }
