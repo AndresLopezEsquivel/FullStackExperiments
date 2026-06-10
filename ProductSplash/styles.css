@@ -51,6 +51,10 @@ p {
   text-align: center;
   gap: 10px;
   padding: 10px;
+  background-image: url("images/intro-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Main content */
