@@ -8,6 +8,11 @@ h1, h2, p {
   margin: 0;
 }
 
+.beta-text,
+.subheading {
+  text-transform: uppercase;
+}
+
 h1 {
   font-weight: 400;
   font-size: 2.5rem;
@@ -66,6 +71,14 @@ p {
    ================= */
 
 
-/* =================
-    Media queries
-   ================= */
+/* Media Queries */
+@media (min-width: 576px) {
+  body {
+    display: flex;
+  }
+
+  .intro,
+  .main-content {
+    flex: 1;
+  }
+}
