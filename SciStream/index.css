@@ -5,16 +5,26 @@ html, body {
 }
 
 /* =================
-    Article Card 
+    Grid Container
    ================= */
-   
+
+main {
+  display: grid;
+  grid-template-columns: 1fr; /* One column */
+  row-gap: 1em;
+}
+
+/* =================
+    Article Card
+   ================= */
+
 a:hover, a:focus {
     filter: brightness(0.9);
 }
 
 a:focus {
     outline: 3px solid #5a5a5a;
-    box-shadow: 0 0 0 3px rgba(135,18,113,0.5); 
+    box-shadow: 0 0 0 3px rgba(135,18,113,0.5);
     transition: outline 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -32,11 +42,11 @@ article {
 
 
 /* =================
-    Typography 
+    Typography
    ================= */
 
 h1 {
-    color: #0F0F0F; 
+    color: #0F0F0F;
     letter-spacing: 0.04em;
     font-family: "Source Code Pro", sans-serif;
     margin: 0;
@@ -70,11 +80,83 @@ p {
 }
 
 /* =================
-    Images 
+    Images
    ================= */
 
 img {
     width: 100%;
     border-top-left-radius: .2em;
     border-top-right-radius: .2em;
+}
+
+/* =================
+    Media Queries
+   ================= */
+
+@media (min-width: 500px) {
+  main {
+    display: grid;
+    grid-template: 1fr 1fr 1fr 1fr / 1fr 1fr 1fr 1fr;
+    row-gap: 1em;
+    column-gap: 1em;
+  }
+
+  .technology {
+    grid-row: span 1;
+    grid-column: span 4;
+  }
+
+  .environment {
+    grid-row: span 1;
+    grid-column: span 2;
+  }
+
+  .nasa {
+    grid-row: span 2;
+    grid-column: span 2;
+  }
+
+  .physics {
+    grid-row: span 1;
+    grid-column: span 2;
+  }
+
+  .health {
+    grid-row: span 1;
+    grid-column: span 4;
+  }
+}
+
+@media (min-width: 870px) {
+  main {
+    display: grid;
+    grid-template: repeat(12, 1fr) / repeat(12, 1fr);
+    row-gap: 1em;
+    column-gap: 1em;
+  }
+
+  .technology {
+    grid-column: 1 / 7;
+    grid-row: 1 / 7;
+  }
+
+  .physics {
+    grid-column: 7 / 10;
+    grid-row: 1 / 7;
+  }
+
+  .nasa {
+    grid-column: 10 / -1;
+    grid-row: 1 / -1;
+  }
+
+  .environment {
+    grid-column: 1 / 4;
+    grid-row: 7 / -1;
+  }
+
+  .health {
+    grid-column: 4 / 10;
+    grid-row: 7 / -1;
+  }
 }
