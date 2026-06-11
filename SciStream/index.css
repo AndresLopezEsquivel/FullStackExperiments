@@ -8,11 +8,36 @@ html, body {
     Grid Container
    ================= */
 
+body {
+  display: grid;
+  grid-template-columns: 1em 1fr 1fr 1em;
+  grid-template-areas:
+    ". . . ."
+    ". h h ."
+    ". m m ."
+    ". f f ."
+    ". . . .";
+    gap: 1em 0;
+}
+
+.site-header {
+  grid-area: h;
+}
+
+main {
+  grid-area: m;
+}
+
+footer {
+  grid-area: f;
+}
+
 main {
   display: grid;
   grid-template-columns: 1fr; /* One column */
   row-gap: 1em;
 }
+
 
 /* =================
     Article Card
