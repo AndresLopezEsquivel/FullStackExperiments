@@ -1,21 +1,14 @@
 import getDataFromDB from './database/db.js';
 import { createServer } from 'node:http';
+import { sendSuccess, sendError } from './utils/response.js';
 
 const PORT = 8000;
-
-function sendError(res, status, error, message) {
-  res.setHeader('Content-Type', 'application/json');
-  res.statusCode = status;
-  res.end(JSON.stringify({ error, message }));
-}
 
 const server = createServer(async (req, res) => {
   if (req.url === '/api' && req.method === 'GET') {
     try {
       const data = await getDataFromDB();
-      res.setHeader('Content-Type', 'application/json');
-      res.statusCode = 200;
-      res.end(JSON.stringify(data));
+      sendSuccess(res, data);
     } catch (err) {
       sendError(res, 500, 'Internal Server Error', 'An Internal Server Error occurred');
     }
@@ -25,9 +18,7 @@ const server = createServer(async (req, res) => {
       const data = await getDataFromDB();
       const continentData = data.filter(item => item.continent.toLowerCase() === continent.toLowerCase());
       if (continentData.length) {
-        res.setHeader('Content-Type', 'application/json');
-        res.statusCode = 200;
-        res.end(JSON.stringify(continentData));
+        sendSuccess(res, continentData);
       } else {
         sendError(res, 404, 'Not Found', "Requested continent wasn't found");
       }
