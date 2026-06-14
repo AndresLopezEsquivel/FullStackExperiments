@@ -25,6 +25,16 @@ const server = createServer(async (req, res) => {
     } catch (err) {
       sendError(res, 500, 'Internal Server Error', 'An Internal Server Error occurred');
     }
+  } else if (req.url.startsWith("/api/country/") && req.method === 'GET') {
+    const country = decodeURIComponent(req.url.split('/').at(-1));
+    console.log(`country = ${country}`);
+    const data = await getDataFromDB();
+    const countryData = data.filter(item => item.country.toLowerCase() === country.toLowerCase());
+    if (countryData.length) {
+      sendSuccess(res, countryData);
+    } else {
+      sendError(res, 404, 'Not Found', "Requested country wasn't found");
+    }
   } else {
     sendError(res, 404, 'Not Found', "Requested route doesn't exist");
   }
