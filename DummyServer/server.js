@@ -17,7 +17,12 @@ const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
   if (url.pathname === '/api' && req.method === 'GET') {
-    sendSuccess(res, data);
+    const filteredData = data.filter(item =>
+      [...url.searchParams].every(([param, value]) =>
+        item[param]?.toLowerCase() === value.toLowerCase()
+      )
+    );
+    sendSuccess(res, filteredData);
   } else if (url.pathname.startsWith('/api/continent/') && req.method === 'GET') {
     const continent = url.pathname.split('/').at(-1);
     const continentData = data.filter(item => item.continent.toLowerCase() === continent.toLowerCase());
@@ -28,7 +33,6 @@ const server = createServer(async (req, res) => {
     }
   } else if (url.pathname.startsWith("/api/country/") && req.method === 'GET') {
     const country = decodeURIComponent(url.pathname.split('/').at(-1));
-    console.log(`country = ${country}`);
     const countryData = data.filter(item => item.country.toLowerCase() === country.toLowerCase());
     if (countryData.length) {
       sendSuccess(res, countryData);
