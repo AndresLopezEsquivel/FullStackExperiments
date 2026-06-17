@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "The Three Laws and the Limits of Logic",
+    "author": "Asimov Reader",
+    "content": "Asimov's I, Robot frames robots not as monsters but as logical beings bound by three simple laws. The brilliance is how those tidy rules collapse into ambiguity once applied to messy reality. Each story is a puzzle where a robot's strange behavior turns out to be perfectly rational given the laws. It reads less like science fiction and more like a series of philosophical thought experiments about obedience, intent, and what it means to do no harm."
+  },
+  {
+    "id": 2,
+    "title": "Indifference Under the Algerian Sun",
+    "author": "Camus Devotee",
+    "content": "The Stranger opens with one of literature's coldest lines and never warms up, and that's the point. Meursault feels nothing he's supposed to feel, and society condemns him less for the killing than for refusing to perform grief. Camus uses this flat, sun-bleached prose to confront us with the absurd: a universe with no inherent meaning. Strangely, the ending feels like liberation rather than despair."
+  },
+  {
+    "id": 3,
+    "title": "Don't Panic, Bring a Towel",
+    "author": "Galaxy Hitchhiker",
+    "content": "Adams takes the vastness of space and makes it gloriously silly. Earth is demolished for a bypass, the answer to everything is 42, and the most useful object in the universe is a towel. Beneath the absurdist comedy is a sneaky philosophical streak: the universe is indifferent, bureaucratic, and faintly ridiculous, so you might as well laugh. Few books make existential dread this fun."
+  },
+  {
+    "id": 4,
+    "title": "Becoming Who You Are",
+    "author": "Zarathustra Student",
+    "content": "Nietzsche writes Thus Spoke Zarathustra as prophecy, parable, and provocation all at once. The prophet descends from his mountain to teach the overman, the death of God, and eternal recurrence. It's dense, poetic, and deliberately difficult, demanding you wrestle with each aphorism rather than passively absorb it. At its core is a challenge: stop seeking meaning from above and create your own values from the ground up."
+  },
+  {
+    "id": 5,
+    "title": "Notes to Himself, Lessons for Us",
+    "author": "Stoic Apprentice",
+    "content": "Meditations was never meant to be published; it's a Roman emperor's private journal. That intimacy is its power. Marcus Aurelius reminds himself daily to control what he can, release what he can't, and treat others with patience. There's no grand system here, just a powerful man practicing humility in writing. Two thousand years later, its advice on mortality and composure feels startlingly current."
+  }
+]
