@@ -1,0 +1,23 @@
+.card {
+  width: 300px;
+  height: 300px;
+
+  /* grid */
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+
+}
+
+.card.expanded {
+  height: auto;
+}
+
+.card-content {
+  /* overflow */
+  overflow: hidden;
+}
+
+.card.expanded .card-content {
+  overflow: visible;
+}

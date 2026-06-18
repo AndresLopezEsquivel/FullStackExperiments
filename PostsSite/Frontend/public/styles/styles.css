@@ -1,0 +1,9 @@
+@import url("./card.css");
+
+* {
+  border: 1px solid black;
+}
+
+* {
+  margin: 0;
+}
