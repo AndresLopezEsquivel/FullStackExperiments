@@ -1,15 +1,16 @@
 .posts {
-  /* grid */
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 10px;
-  grid-auto-flow: dense;
-  /* Let each row size to its tallest card, and don't stretch shorter
-     cards to fill it — each card keeps its own content height. */
-  align-items: start;
+  /* Masonry via CSS multi-column: fit as many ~280px columns as the
+     viewport allows, and let cards pack tightly with independent heights. */
+  column-width: 280px;
+  column-gap: 10px;
 }
 
 .card {
+  /* Don't let a card split across two columns. */
+  break-inside: avoid;
+  /* column-gap only spaces columns horizontally; this is the vertical gap. */
+  margin-bottom: 10px;
+
   /* grid */
   display: grid;
   grid-template-columns: 1fr;
