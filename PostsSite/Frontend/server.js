@@ -10,6 +10,19 @@ function logRequest(req) {
 
 const server = createServer((req, res) => {
   logRequest(req);
+
+  // Allow the static UI (served from a different origin/port, e.g. `npx serve`)
+  // to call this proxy. Temporary until the UI is served from this same server.
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
   if (req.url === '/api/posts' && req.method === 'GET') {
     getPost(res);
   } else if (req.url === '/api/posts' && req.method === 'POST') {
