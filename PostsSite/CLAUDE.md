@@ -17,15 +17,25 @@ Two separate npm packages, each with its own `package.json` and run independentl
 
 - **`Frontend/`** — listens on **port 8000**, acts as a **reverse proxy** to the backend.
   - `server.js` maps `GET /api/posts` and `POST /api/posts` to `routes/proxy.js`, which forwards to the backend at `localhost:3000/`. Backend responses are streamed straight back with `.pipe()`. Backend connection failures return **502**; bad client requests return **400**.
+  - It also sets permissive **CORS** headers on every response and short-circuits `OPTIONS` preflight with `204`. This is temporary: while the UI is served from a different origin (see below), the browser needs CORS to call the proxy.
   - `public/` holds the static UI (`index.html`, `styles/`, `app/`).
 
-The two services communicate only via HTTP. The proxy exists so the browser talks to one origin (8000) while the data API stays on a separate port (3000).
+The two services communicate only via HTTP. The proxy exists so the browser eventually talks to one origin (8000) while the data API stays on a separate port (3000).
 
-### Current state / planned next steps
+### Browser app (`public/app/`)
 
-- The browser UI is **not yet wired to the API** — this is intentional, mid-build. `public/index.html` hard-codes ~12 sample cards and loads `./app/main.js`, which is currently an empty placeholder. The only live JS is the card expand/collapse logic in `public/app/dom.js` (event delegation on `.posts`, toggling the `expanded` class and the "Show more"/"Show Less" button text). **Next step:** `main.js` is the intended entry point that will fetch from the proxy (`/api/posts`) and render cards; `dom.js` (not yet referenced by `index.html`) holds the interaction logic to compose in.
-- The Frontend `server.js` proxies `/api/posts` but does not yet serve the `public/` static files. **Next step:** add a static-file route so the UI is served from port 8000 alongside the proxied API.
-- Cards use a CSS multi-column masonry layout (see recent commits and `public/styles/`).
+Vanilla ES modules, loaded via `<script type="module" src="./app/main.js">` in `index.html`:
+
+- `api.js` — `getPosts()` and `createPost(post)`. Both `fetch` `API_BASE + /api/posts` (where `API_BASE = http://localhost:8000`, the proxy) and throw on non-2xx. `API_BASE` is absolute because the UI is currently served from a different port than the proxy; it can become `''` (relative, same origin) once static-file serving lands.
+- `dom.js` — all DOM logic: `createCard` (internal) builds card markup with `textContent` (no `innerHTML`, avoids markup injection); `renderPosts` replaces the `.posts` container's children; `prependPost` adds one card on top; `initCardResize` is delegated click handling on `.posts` for expand/collapse; `initPostForm(onSubmit)` wires the create-post form.
+- `main.js` — entry point: calls `initCardResize`, wires `initPostForm` to `createPost` + `prependPost`, then `getPosts` + `renderPosts`.
+
+Posts render in stored order (oldest first); newly created posts are prepended (newest on top).
+
+### Planned next step
+
+- The Frontend `server.js` proxies `/api/posts` but does not yet serve the `public/` static files. The UI is currently served separately with `npx serve` (see Commands), which is why `API_BASE` is absolute and the proxy sets CORS headers. **Next step:** add a static-file route so the UI is served from port 8000 alongside the proxied API; then `API_BASE` can go relative and the CORS headers can be dropped.
+- Cards use a CSS multi-column masonry layout (`public/styles/card.css`).
 
 ## Commands
 
@@ -41,9 +51,12 @@ npm start        # node server.js
 cd Frontend && npm install
 npm run dev      # nodemon
 npm start
+
+# Static UI (served separately until static-file serving is added to the proxy)
+cd Frontend/public && npx serve
 ```
 
-Both must be running for the proxy path to work (Frontend → Backend). There is currently **no test suite, linter, or build step** — `node` runs the source directly (`"type": "module"`, native ESM).
+All three are needed to exercise the full UI: backend (3000), proxy (8000), and the static server (`npx serve`, on its own port). The proxy path (Frontend → Backend) needs the first two. There is currently **no test suite, linter, or build step** — `node` runs the source directly (`"type": "module"`, native ESM).
 
 ### Manual API checks
 
