@@ -1,4 +1,6 @@
-const API_BASE = 'http://localhost:8000';
+// The UI is served by the Frontend proxy (port 8000), so the API is same-origin
+// and a relative base works.
+const API_BASE = '';
 
 export async function getPosts() {
   const res = await fetch(`${API_BASE}/api/posts`);

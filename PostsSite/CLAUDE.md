@@ -15,27 +15,24 @@ Two separate npm packages, each with its own `package.json` and run independentl
   - `data/store.js` is the persistence layer. Posts are stored in `data/posts.json` (a flat JSON array); there is no database. `addPost` assigns a new `id` as `last id + 1` and rewrites the whole file. `getDataPath()` resolves the JSON path relative to `store.js` via `import.meta.url`.
   - `sendResponse(res, data, statusCode, contentType)` is the shared response helper used everywhere.
 
-- **`Frontend/`** — listens on **port 8000**, acts as a **reverse proxy** to the backend.
+- **`Frontend/`** — listens on **port 8000**, serves the UI and acts as a **reverse proxy** to the backend (same origin for both).
   - `server.js` maps `GET /api/posts` and `POST /api/posts` to `routes/proxy.js`, which forwards to the backend at `localhost:3000/`. Backend responses are streamed straight back with `.pipe()`. Backend connection failures return **502**; bad client requests return **400**.
-  - It also sets permissive **CORS** headers on every response and short-circuits `OPTIONS` preflight with `204`. This is temporary: while the UI is served from a different origin (see below), the browser needs CORS to call the proxy.
+  - Every other `GET` falls through to `routes/static.js` (`serveStatic`), which serves files from `public/`: `/` → `index.html`, a small extension→content-type map (note `.js` → `text/javascript` so ES modules load), a path-traversal guard (→ 403), and 404 for missing files. Non-GET requests to unknown URLs are 404.
   - `public/` holds the static UI (`index.html`, `styles/`, `app/`).
 
-The two services communicate only via HTTP. The proxy exists so the browser eventually talks to one origin (8000) while the data API stays on a separate port (3000).
+The two services communicate only via HTTP. The UI and the data API share one origin (8000); the proxy forwards data calls to the backend on a separate port (3000). Because everything is same-origin, **no CORS headers are needed**.
 
 ### Browser app (`public/app/`)
 
 Vanilla ES modules, loaded via `<script type="module" src="./app/main.js">` in `index.html`:
 
-- `api.js` — `getPosts()` and `createPost(post)`. Both `fetch` `API_BASE + /api/posts` (where `API_BASE = http://localhost:8000`, the proxy) and throw on non-2xx. `API_BASE` is absolute because the UI is currently served from a different port than the proxy; it can become `''` (relative, same origin) once static-file serving lands.
+- `api.js` — `getPosts()` and `createPost(post)`. Both `fetch` `API_BASE + /api/posts` and throw on non-2xx. `API_BASE` is `''` (relative) because the UI is served same-origin by the proxy on port 8000.
 - `dom.js` — all DOM logic: `createCard` (internal) builds card markup with `textContent` (no `innerHTML`, avoids markup injection); `renderPosts` replaces the `.posts` container's children; `prependPost` adds one card on top; `initCardResize` is delegated click handling on `.posts` for expand/collapse; `initPostForm(onSubmit)` wires the create-post form.
 - `main.js` — entry point: calls `initCardResize`, wires `initPostForm` to `createPost` + `prependPost`, then `getPosts` + `renderPosts`.
 
 Posts render in stored order (oldest first); newly created posts are prepended (newest on top).
 
-### Planned next step
-
-- The Frontend `server.js` proxies `/api/posts` but does not yet serve the `public/` static files. The UI is currently served separately with `npx serve` (see Commands), which is why `API_BASE` is absolute and the proxy sets CORS headers. **Next step:** add a static-file route so the UI is served from port 8000 alongside the proxied API; then `API_BASE` can go relative and the CORS headers can be dropped.
-- Cards use a CSS multi-column masonry layout (`public/styles/card.css`).
+Cards use a CSS multi-column masonry layout (`public/styles/card.css`).
 
 ## Commands
 
@@ -47,16 +44,13 @@ cd Server && npm install
 npm run dev      # nodemon, auto-reload
 npm start        # node server.js
 
-# Frontend proxy (port 8000) — start the backend first
+# Frontend: UI + proxy (port 8000) — start the backend first
 cd Frontend && npm install
 npm run dev      # nodemon
 npm start
-
-# Static UI (served separately until static-file serving is added to the proxy)
-cd Frontend/public && npx serve
 ```
 
-All three are needed to exercise the full UI: backend (3000), proxy (8000), and the static server (`npx serve`, on its own port). The proxy path (Frontend → Backend) needs the first two. There is currently **no test suite, linter, or build step** — `node` runs the source directly (`"type": "module"`, native ESM).
+Start both, then open **http://localhost:8000** — the Frontend serves the UI and proxies data calls to the backend, so those two processes are all that's needed. There is currently **no test suite, linter, or build step** — `node` runs the source directly (`"type": "module"`, native ESM).
 
 ### Manual API checks
 
