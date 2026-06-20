@@ -38,6 +38,33 @@ export function renderPosts(posts) {
   postsContainer.replaceChildren(...posts.map(createCard));
 }
 
+// Adds a single post to the top of the .posts container.
+export function prependPost(post) {
+  const postsContainer = document.querySelector('.posts');
+  postsContainer.prepend(createCard(post));
+}
+
+// Wires the create-post form. `onSubmit` receives the form values and should
+// resolve once the post is persisted; the form is reset afterward.
+export function initPostForm(onSubmit) {
+  const form = document.querySelector('.post-form');
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form));
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    try {
+      await onSubmit(data);
+      form.reset();
+    } catch (err) {
+      console.error('Failed to publish post:', err);
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+}
+
 export function initCardResize() {
   const postsContainer = document.querySelector('.posts');
 
