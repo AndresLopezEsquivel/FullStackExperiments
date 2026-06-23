@@ -36,7 +36,59 @@
   line-height: 1.6;
 }
 
-/* Soft fade hinting at clipped text while collapsed. */
+/*
+ * Collapsed "fade-out" overlay.
+ * --------------------------------
+ * Draws a soft gradient at the bottom of the content that goes from fully
+ * transparent to solid white, so clipped text appears to dissolve into the
+ * card instead of being cut off by a hard edge. It's a visual hint that there
+ * is more to read (paired with the "Show More" button below).
+ *
+ * Selector — `.card:not(.expanded) .card-content::after`:
+ *   - `.card:not(.expanded)` scopes this to collapsed cards only. When the card
+ *     gains the `.expanded` class (toggled in dom.js's initCardResize), the
+ *     `:not()` no longer matches, the rule stops applying, and the fade simply
+ *     disappears — exactly what we want once all the text is visible.
+ *   - `.card-content::after` targets a generated pseudo-element that is the last
+ *     child *inside* `.card-content`. We use `::after` instead of a real <div>
+ *     so the overlay is purely presentational and adds nothing to the HTML/DOM.
+ *
+ * content: "";
+ *   - Required for any `::before`/`::after` to be generated at all. Without a
+ *     `content` declaration the pseudo-element is never created. It's empty
+ *     because we only want a painted box, not text.
+ *
+ * position: absolute  (+ the parent's `position: relative`)
+ *   - Takes the overlay out of normal flow and positions it against the nearest
+ *     positioned ancestor — `.card-content`, which is `position: relative` for
+ *     exactly this reason. So the offsets below are measured from the content
+ *     box's own edges, not the page.
+ *   - Being absolute, it overlaps the text rather than pushing it down, and it
+ *     doesn't affect the content's height or the masonry layout.
+ *
+ * inset-inline: 0;
+ *   - Logical shorthand for the inline-axis offsets: in a left-to-right layout
+ *     it sets `left: 0` and `right: 0`, stretching the overlay across the full
+ *     width of `.card-content`. ("Logical" = it follows text direction, so it
+ *     would flip for RTL languages automatically.)
+ *
+ * bottom: 0;
+ *   - Pins the overlay to the bottom edge of the content box — where the text
+ *     gets clipped by `overflow: hidden` / `max-height` — so the fade sits right
+ *     over the cut-off point.
+ *
+ * height: 48px;
+ *   - The vertical span of the fade. Only the bottom ~48px is covered; the text
+ *     above stays fully legible. With `bottom: 0` and no `top`, the box grows
+ *     upward from the bottom for this fixed height.
+ *
+ * background: linear-gradient(to bottom, rgba(255,255,255,0), #ffffff);
+ *   - The gradient runs top→bottom from transparent white to opaque white,
+ *     matching the card's background. Note the start color is transparent
+ *     *white* (alpha 0), not `transparent`; both look invisible here, but using
+ *     white avoids a faint grey tinge some browsers show when interpolating
+ *     from the default `transparent` (which is transparent *black*).
+ */
 .card:not(.expanded) .card-content::after {
   content: "";
   position: absolute;
