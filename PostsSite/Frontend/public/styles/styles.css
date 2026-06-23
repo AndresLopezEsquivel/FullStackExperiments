@@ -1,11 +1,11 @@
 @import url("./card.css");
 
 * {
-  border: 1px solid black;
+  margin: 0;
 }
 
-* {
-  margin: 0;
+body {
+  font-family: "Elms Sans", sans-serif;
 }
 
 .post-form {
