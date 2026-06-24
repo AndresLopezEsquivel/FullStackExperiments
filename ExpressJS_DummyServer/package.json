@@ -1,0 +1,17 @@
+{
+  "name": "expressjs_dummyserver",
+  "version": "1.0.0",
+  "description": "Dummy ExpressJS server",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "author": "QT-1",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.14"
+  }
+}
