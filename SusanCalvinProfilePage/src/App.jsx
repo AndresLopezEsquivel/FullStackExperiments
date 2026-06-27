@@ -7,7 +7,7 @@ import StatsRow from './components/StatsRow.jsx';
 
 function App() {
   return (
-    <div class="profile-card">
+    <div className="profile-card">
       <Avatar />
       <ProfileInfo />
       <StatsRow />

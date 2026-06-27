@@ -1,12 +1,25 @@
 * {
   border: 1px solid black;
-}
-
-body {
   margin: 0;
 }
 
 .profile-card {
-  height: 600px;
+
+  /* Size */
+  box-sizing: border-box;
   width: 400px;
+
+  /* Content */
+  padding: 20px 40px;
+}
+
+.avatar {
+  padding: 30px 0;
+}
+
+.avatar > img {
+  display: block;
+  margin: 0 auto;
+  width: 100px;
+  border-radius: 50%;
 }
