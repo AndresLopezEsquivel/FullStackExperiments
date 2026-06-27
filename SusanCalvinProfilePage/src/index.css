@@ -32,3 +32,12 @@
   padding: 0 10px 10px 10px;
   text-align: center;
 }
+
+/* Stats Row */
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 0 10px 10px 10px;
+  text-align: center;
+}
