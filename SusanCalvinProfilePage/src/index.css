@@ -41,3 +41,10 @@
   padding: 0 10px 10px 10px;
   text-align: center;
 }
+
+/* Social Links */
+.social-links {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 30px 10px 30px;
+}
