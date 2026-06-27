@@ -1,5 +1,7 @@
 export default function FollowButton() {
   return (
-    <h1>FollowButton</h1>
+    <div className="follow-button">
+      <a href="/">Follow</a>
+    </div>
   );
 }
