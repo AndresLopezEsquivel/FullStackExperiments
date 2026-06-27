@@ -13,6 +13,8 @@
   padding: 20px 40px;
 }
 
+/* Avatar */
+
 .avatar {
   padding: 30px 0;
 }
@@ -22,4 +24,11 @@
   margin: 0 auto;
   width: 100px;
   border-radius: 50%;
+}
+
+/* Profile Info */
+
+.profile-info {
+  padding: 0 10px 10px 10px;
+  text-align: center;
 }
