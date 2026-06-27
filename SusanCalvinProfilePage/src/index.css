@@ -1,4 +1,12 @@
+* {
+  border: 1px solid black;
+}
+
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+}
+
+.profile-card {
+  height: 600px;
+  width: 400px;
 }
