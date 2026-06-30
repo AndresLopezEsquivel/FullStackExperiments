@@ -1,16 +1,37 @@
-# React + Vite
+# Susan Calvin Profile Page
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small static profile-card built with React + Vite — featuring Dr. Susan Calvin,
+robopsychologist from Isaac Asimov's *I, Robot*.
 
-Currently, two official plugins are available:
+## Preview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![Susan Calvin profile card](docs/screenshot.png)
 
-## React Compiler
+## Tech
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [React](https://react.dev/)
+- [Vite](https://vite.dev/)
+- [react-icons](https://react-icons.github.io/react-icons/) for the social icons
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+Then open the local URL Vite prints (e.g. http://localhost:5173/).
+
+## Structure
+
+The card is composed of small, focused components in `src/components/`:
+
+| Component | Responsibility |
+| --- | --- |
+| `Avatar` | Circular profile image |
+| `ProfileInfo` | Name, handle, and bio |
+| `StatsRow` | Posts / Followers / Following counts |
+| `SocialLinks` | Social media icon links |
+| `FollowButton` | Call-to-action button |
+
+Global page styles live in `src/index.css`; the card styling lives in `src/App.css`.
