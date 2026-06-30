@@ -1,69 +1,19 @@
+:root {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
 * {
-  border: 1px solid black;
   margin: 0;
-}
-
-.profile-card {
-
-  /* Size */
   box-sizing: border-box;
-  width: 400px;
-
-  /* Content */
-  padding: 20px 40px;
 }
 
-/* Avatar */
-
-.avatar {
-  padding: 30px 0;
-}
-
-.avatar > img {
-  display: block;
-  margin: 0 auto;
-  box-sizing: border-box;
-  width: 100px;
-  border-radius: 50%;
-}
-
-/* Profile Info */
-
-.profile-info {
-  padding: 0 10px 10px 10px;
-  text-align: center;
-}
-
-/* Stats Row */
-
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  padding: 0 10px 10px 10px;
-  text-align: center;
-}
-
-/* Social Links */
-.social-links {
+body {
+  min-height: 100vh;
   display: flex;
-  justify-content: space-around;
-  padding: 0 30px 10px 30px;
-}
-
-/*Follow Button*/
-.follow-button {
-  padding: 0 30px 10px 30px;
-}
-
-.follow-button > a {
-  margin: 0 auto;
-  padding: 10px 20px;
-  display: block;
-  width: 180px;
-  text-align: center;
-  text-decoration: none;
-}
-
-.follow-button > a:visited {
-  color: inherit;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background-color: #f3f4f6;
 }
