@@ -1,5 +1,6 @@
 import { createServer } from "node:http";
 import { getPosts, createPost, sendResponse } from "./routes/posts.js";
+import { initDb } from "./db/init.js";
 
 const PORT = 3000;
 
@@ -25,6 +26,13 @@ const server = createServer(async (req, res) => {
     sendResponse(res, { error: 'Internal Server Error' }, 500, 'application/json');
   }
 });
+
+try {
+  await initDb();
+} catch (error) {
+  console.error('Failed to initialize the database:', error);
+  process.exit(1);
+}
 
 server.listen(PORT, () => {
   console.log(`Server is running on PORT = ${PORT}`);
