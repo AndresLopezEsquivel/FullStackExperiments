@@ -16,7 +16,7 @@ Two separate npm packages, each with its own `package.json` and run independentl
   - `sendResponse(res, data, statusCode, contentType)` is the shared response helper used everywhere.
 
 - **`Frontend/`** — listens on **port 8000**, serves the UI and acts as a **reverse proxy** to the backend (same origin for both).
-  - `server.js` maps `GET /api/posts` and `POST /api/posts` to `routes/proxy.js`, which forwards to the backend at `localhost:3000/`. Backend responses are streamed straight back with `.pipe()`. Backend connection failures return **502**; bad client requests return **400**.
+  - `server.js` maps `GET /api/posts` and `POST /api/posts` to `routes/proxy.js` (the GET handler is exported as `getPost`, singular), which forwards to the backend at `localhost:3000/`. Backend responses are streamed straight back with `.pipe()`. Backend connection failures return **502**; bad client requests return **400**.
   - Every other `GET` falls through to `routes/static.js` (`serveStatic`), which serves files from `public/`: `/` → `index.html`, a small extension→content-type map (note `.js` → `text/javascript` so ES modules load), a path-traversal guard (→ 403), and 404 for missing files. Non-GET requests to unknown URLs are 404.
   - `public/` holds the static UI (`index.html`, `styles/`, `app/`).
 
