@@ -11,8 +11,10 @@ PostsSite is a small learning project: a posts/blog feed built with **plain Node
 Two separate npm packages, each with its own `package.json` and run independently:
 
 - **`Server/`** — backend API, listens on **port 3000**.
-  - `server.js` routes `GET /` and `POST /` to handlers in `routes/posts.js`; everything else is 404. All request handling is wrapped in try/catch → 500.
-  - `data/store.js` is the persistence layer. Posts are stored in `data/posts.json` (a flat JSON array); there is no database. `addPost` assigns a new `id` as `last id + 1` and rewrites the whole file. `getDataPath()` resolves the JSON path relative to `store.js` via `import.meta.url`.
+  - `server.js` routes `GET /` and `POST /` to handlers in `routes/posts.js`; everything else is 404. All request handling is wrapped in try/catch → 500. On startup it `await`s `db/init.js` `initDb()` before `listen`, and `process.exit(1)`s if the database is unreachable.
+  - `data/store.js` is the persistence layer, backed by **PostgreSQL** (via the `pg` `Pool` in `db/pool.js`). `readPosts()` runs `SELECT ... ORDER BY id`; `addPost()` runs a parameterized `INSERT ... RETURNING` (so `id` comes from the `SERIAL` column, and only `title`/`author`/`content` are persisted — unknown client fields are dropped). Both keep the same async signatures the routes already call.
+  - `db/pool.js` builds the connection `Pool` entirely from env vars: `DATABASE_URL` if set, else the standard `PGHOST`/`PGPORT`/`PGUSER`/`PGPASSWORD`/`PGDATABASE`. SSL is enabled when `PGSSLMODE=require` (or `DB_SSL=true`) — off locally, on for Amazon RDS — so moving to RDS is a `.env` change, not a code change.
+  - `db/init.js` `initDb()` runs `CREATE TABLE IF NOT EXISTS posts (...)` then seeds the table from `data/posts.json` **only when it is empty** (inserting with explicit ids, then `setval` on the sequence). It is idempotent, so restarts don't re-seed. `data/posts.json` is now just seed data, not the live store.
   - `sendResponse(res, data, statusCode, contentType)` is the shared response helper used everywhere.
 
 - **`Frontend/`** — listens on **port 8000**, serves the UI and acts as a **reverse proxy** to the backend (same origin for both).
@@ -36,13 +38,13 @@ Cards use a CSS multi-column masonry layout (`public/styles/card.css`).
 
 ## Commands
 
-Each service is run from its own directory.
+Each service is run from its own directory. The backend needs a running PostgreSQL and a `Server/.env` first — copy `Server/.env.example` to `Server/.env`, fill in credentials, and create the database once (`createdb postssite`). The npm scripts load `.env` via Node's native `--env-file` (Node ≥ 20.6). On first boot the table is auto-created and seeded from `data/posts.json`.
 
 ```bash
-# Backend (port 3000)
+# Backend (port 3000) — needs PostgreSQL + Server/.env
 cd Server && npm install
-npm run dev      # nodemon, auto-reload
-npm start        # node server.js
+npm run dev      # nodemon --env-file=.env, auto-reload
+npm start        # node --env-file=.env server.js
 
 # Frontend: UI + proxy (port 8000) — start the backend first
 cd Frontend && npm install
@@ -50,7 +52,7 @@ npm run dev      # nodemon
 npm start
 ```
 
-Start both, then open **http://localhost:8000** — the Frontend serves the UI and proxies data calls to the backend, so those two processes are all that's needed. There is currently **no test suite, linter, or build step** — `node` runs the source directly (`"type": "module"`, native ESM).
+Start both, then open **http://localhost:8000** — the Frontend serves the UI and proxies data calls to the backend, so those two processes (plus PostgreSQL) are all that's needed. There is currently **no test suite, linter, or build step** — `node` runs the source directly (`"type": "module"`, native ESM).
 
 ### Manual API checks
 
@@ -69,5 +71,5 @@ curl -X POST localhost:8000/api/posts -H 'Content-Type: application/json' \
 ## Conventions
 
 - ESM only (`import`/`export`, `node:` prefixed builtins). No transpilation.
-- No external runtime dependencies — only `nodemon` as a devDependency. Prefer keeping it dependency-light unless there's a clear reason.
+- `pg` is the only runtime dependency (Server), plus `nodemon` as a devDependency in each service. Config comes from env vars (`.env`, loaded via `--env-file` — no `dotenv`). Prefer keeping it dependency-light unless there's a clear reason.
 - Both services log every request as `[ISO timestamp] METHOD url`.
