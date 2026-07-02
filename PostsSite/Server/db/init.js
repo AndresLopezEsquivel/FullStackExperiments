@@ -15,15 +15,14 @@ async function seedFromJson() {
   const posts = JSON.parse(raw);
   if (posts.length === 0) return;
 
-  // Insert with explicit ids to preserve the original ids, then bump the
-  // sequence so the next auto-assigned id continues after the seed data.
-  for (const { id, title, author, content } of posts) {
+  // Insert without ids so the SERIAL column assigns them in array order
+  // (1..N); this keeps the sequence in sync for later inserts automatically.
+  for (const { title, author, content } of posts) {
     await pool.query(
-      'INSERT INTO posts (id, title, author, content) VALUES ($1, $2, $3, $4)',
-      [id, title, author, content]
+      'INSERT INTO posts (title, author, content) VALUES ($1, $2, $3)',
+      [title, author, content]
     );
   }
-  await pool.query("SELECT setval('posts_id_seq', (SELECT MAX(id) FROM posts))");
 }
 
 // Creates the posts table if it does not exist and seeds it once when empty.
